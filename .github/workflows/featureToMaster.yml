@@ -18,7 +18,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           source-branch: master
-          target-branch: ${{ github.ref }}
+          target-branch: feature/auto
           commit-message: "Merge..."
 #  job-merge-feature-to-develop:
 #    name: merge-feature-to-develop
