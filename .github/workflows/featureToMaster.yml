@@ -9,13 +9,14 @@ jobs:
   merge-master-to-develop:
     name: Merge master -> feature
     runs-on: ubuntu-latest
-
     steps:
+      - name: Merge master -> feature
         uses: tukasz/direct-merge-action@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           source-branch: master
           target-branch: ${{ github.ref }}
+          commit-message: "Merge..."
 #  job-merge-feature-to-develop:
 #    name: merge-feature-to-develop
 #    runs-on: ubuntu-latest
