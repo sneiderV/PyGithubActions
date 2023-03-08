@@ -3,7 +3,7 @@ import datetime
 
 class Persona:
 
-    # Constructor
+    # Constructor - 
     def __init__(self, nombre, edad):
         self.__nombre = nombre
         self.__edad = edad
