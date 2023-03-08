@@ -6,28 +6,41 @@ on:
            - 'feature/*'
 
 jobs:
-  job-merge-feature-to-develop:
-    name: merge-feature-to-develop
+  merge-master-to-develop:
+    name: Merge master -> develop
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout de repositorio
-        uses: actions/checkout@v2
-
-      - name: Configuración de entorno de python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.7'
-
-      - name: Actual branch
-        run: echo ${{ github.ref }}
-
-      - name: Merge main -> feature
-        if: ${{ contains(github.event.head_commit.message, 'merge-to-dev') }}
-        uses: tukasz/direct-merge-action@master
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          source-branch: master
-          target-branch: ${{ github.ref }}
+      uses: tukasz/direct-merge-action@master
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        owner: tukasz
+        repo: direct-merge-action
+        source-branch: master
+        target-branch: ${{ github.ref }}
+        commit-message: "merging..."
+#  job-merge-feature-to-develop:
+#    name: merge-feature-to-develop
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout de repositorio
+#        uses: actions/checkout@v2
+#
+#      - name: Configuración de entorno de python
+#        uses: actions/setup-python@v2
+#        with:
+#          python-version: '3.7'
+#
+#      - name: Actual branch
+#        run: echo ${{ github.ref }}
+#
+#      - name: Merge main -> feature
+#        if: ${{ contains(github.event.head_commit.message, 'merge-to-dev') }}
+#        uses: tukasz/direct-merge-action@master
+#        with:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          source-branch: master
+#          target-branch: ${{ github.ref }}
 
 #      - name: Instalación de librerías y dependencias
 #        run: |
