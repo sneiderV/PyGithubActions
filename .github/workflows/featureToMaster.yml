@@ -17,8 +17,8 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.7'
-      - name: develop -> feature
-        if: ${{ success() && github.ref == 'refs/heads/feature/**' && contains(github.event.head_commit.message, 'merge-to-dev') }}
+      - name: main -> feature
+        if: ${{ success() && github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, 'merge-to-dev') }}
         uses: tukasz/direct-merge-action@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
