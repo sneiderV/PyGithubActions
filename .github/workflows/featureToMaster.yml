@@ -7,18 +7,15 @@ on:
 
 jobs:
   merge-master-to-develop:
-    name: Merge master -> develop
+    name: Merge master -> feature
     runs-on: ubuntu-latest
 
     steps:
-      uses: tukasz/direct-merge-action@master
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        owner: tukasz
-        repo: direct-merge-action
-        source-branch: master
-        target-branch: ${{ github.ref }}
-        commit-message: "merging..."
+        uses: tukasz/direct-merge-action@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          source-branch: master
+          target-branch: ${{ github.ref }}
 #  job-merge-feature-to-develop:
 #    name: merge-feature-to-develop
 #    runs-on: ubuntu-latest
