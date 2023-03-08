@@ -17,13 +17,13 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.7'
-
+#&& github.ref == 'refs/heads/feature/**'
       - name: develop -> feature
-        if: ${{ success() && github.ref == 'refs/heads/feature/**' && contains(github.event.head_commit.message, 'merge-to-dev') }}
+        if: ${{ success() && contains(github.event.head_commit.message, 'merge-to-dev') }}
         uses: tukasz/direct-merge-action@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          source-branch: develop
+          source-branch: master
           target-branch: ${{ github.ref }}
 
       - name: Instalación de librerías y dependencias
