@@ -6,56 +6,42 @@ on:
            - 'feature/*'
 
 jobs:
-  merge-master-to-develop:
-    name: Merge master -> feature
+  job-merge-feature-to-master:
+    name: merge-feature-to-master
     runs-on: ubuntu-latest
     steps:
-      - name: actual branch
+      - name: Checkout de repositorio
+        uses: actions/checkout@v2
+
+      - name: Configuración de entorno de python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+
+      - name: Actual branch
         run: echo ${{ github.ref }}
 
-      - name: Merge master -> feature
+      - name: Merge master -> feature/*
+        if: ${{ contains(github.event.head_commit.message, 'merge-to-master') }}
         uses: tukasz/direct-merge-action@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           source-branch: master
-          target-branch: feature/auto
-          commit-message: "Merge..."
-#  job-merge-feature-to-develop:
-#    name: merge-feature-to-develop
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout de repositorio
-#        uses: actions/checkout@v2
-#
-#      - name: Configuración de entorno de python
-#        uses: actions/setup-python@v2
-#        with:
-#          python-version: '3.7'
-#
-#      - name: Actual branch
-#        run: echo ${{ github.ref }}
-#
-#      - name: Merge main -> feature
-#        if: ${{ contains(github.event.head_commit.message, 'merge-to-dev') }}
-#        uses: tukasz/direct-merge-action@master
-#        with:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          source-branch: master
-#          target-branch: ${{ github.ref }}
+          target-branch: ${{ github.ref }}
 
-#      - name: Instalación de librerías y dependencias
-#        run: |
-#          python -m pip install --upgrade pip
-#          pip install -r requirements.txt
-#
-#      - name: Correr pruebas
-#        id: correr-pruebas
-#        run: python -m unittest discover -s tests
+      - name: Instalación de librerías y dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-#      - name: feature -> develop
-#        if: ${{ success() && contains(github.event.head_commit.message, 'merge-to-dev') }}
-#        uses: tukasz/direct-merge-action@master
-#        with:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          source-branch: ${{ github.ref }}
-#          target-branch: develop
+      - name: Correr pruebas
+        id: correr-pruebas
+        run: python -m unittest discover -s tests
+
+      - name: feature -> master
+        if: ${{ success() && contains(github.event.head_commit.message, 'merge-to-master') }}
+        uses: tukasz/direct-merge-action@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          source-branch: ${{ github.ref }}
+          target-branch: master
