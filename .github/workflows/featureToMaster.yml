@@ -19,7 +19,7 @@ jobs:
           python-version: '3.7'
 
       - name: develop -> feature
-        if: ${{ success() && contains(github.event.head_commit.message, 'merge-to-dev') }}
+        if: ${{ success() && github.ref == 'refs/heads/feature/**' && contains(github.event.head_commit.message, 'merge-to-dev') }}
         uses: tukasz/direct-merge-action@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -35,13 +35,13 @@ jobs:
         id: correr-pruebas
         run: python -m unittest discover -s tests
 
-      - name: feature -> develop
-        if: ${{ success() && contains(github.event.head_commit.message, 'merge-to-dev') }}
-        uses: tukasz/direct-merge-action@master
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          source-branch: ${{ github.ref }}
-          target-branch: develop
+#      - name: feature -> develop
+#        if: ${{ success() && contains(github.event.head_commit.message, 'merge-to-dev') }}
+#        uses: tukasz/direct-merge-action@master
+#        with:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          source-branch: ${{ github.ref }}
+#          target-branch: develop
 
 
 
