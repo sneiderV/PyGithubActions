@@ -10,44 +10,48 @@ jobs:
     name: verificar commit
     outputs:
       mergeToDevelop: ${{ contains(github.event.head_commit.message, 'merge-to-dev') }}
-
-  job-merge-feature-dev:
-    name: merge-feature-dev
-    runs-on: ubuntu-latest
     steps:
-    - name: Merge feature develop
-      if: ${{need.job-verificar-commit.outputs.mergeToDevelop}}
-      outputs:
-        respuesta: ${{ steps.git-resultado.outputs.respuesta }}
-      uses: tukasz/direct-merge-action@master
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        source-branch: ${{ github.ref }}
-        target-branch: develop
-    - name: git resultado
-      id: git-resultado
-      if: ${{ success() }}
-      env:
-        MENSAJE_EXITO: True
-      run: echo "::set-output name=respuesta::${MENSAJE_EXITO}"
+      - name: check if do merge
+        id: check
+        run: echo ${{ contains(github.event.head_commit.message, 'merge-to-dev') }}
 
-  job-ejecutar-pruebas:
-    name: ejecutar-pruebas
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout de repositorio
-      uses: actions/checkout@v2
-    - name: Configuración de entorno de python
-      uses: actions/setup-python@v2
-      with:
-          python-version: '3.7'
-    - name: Instalación de librerías y dependencias
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: ejecutar pruebas
-      id: ejecutar-pruebas
-      run: python -m unittest discover -s tests
+#  job-merge-feature-dev:
+#    name: merge-feature-dev
+#    runs-on: ubuntu-latest
+#    steps:
+#    - name: Merge feature develop
+#      if: ${{need.job-verificar-commit.outputs.mergeToDevelop}}
+#      outputs:
+#        respuesta: ${{ steps.git-resultado.outputs.respuesta }}
+#      uses: tukasz/direct-merge-action@master
+#      with:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        source-branch: ${{ github.ref }}
+#        target-branch: develop
+#    - name: git resultado
+#      id: git-resultado
+#      if: ${{ success() }}
+#      env:
+#        MENSAJE_EXITO: True
+#      run: echo "::set-output name=respuesta::${MENSAJE_EXITO}"
+#
+#  job-ejecutar-pruebas:
+#    name: ejecutar-pruebas
+#    runs-on: ubuntu-latest
+#    steps:
+#    - name: Checkout de repositorio
+#      uses: actions/checkout@v2
+#    - name: Configuración de entorno de python
+#      uses: actions/setup-python@v2
+#      with:
+#          python-version: '3.7'
+#    - name: Instalación de librerías y dependencias
+#      run: |
+#        python -m pip install --upgrade pip
+#        pip install -r requirements.txt
+#    - name: ejecutar pruebas
+#      id: ejecutar-pruebas
+#      run: python -m unittest discover -s tests
 
 #  job-push:
 #    name: hacer-merge
