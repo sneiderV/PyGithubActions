@@ -20,7 +20,6 @@ jobs:
 
       - name: develop -> feature
         if: ${{ success() && contains(github.event.head_commit.message, 'merge-to-dev') }}
-        run: echo ${{ contains(github.event.head_commit.message, 'merge-to-dev') }}
         uses: tukasz/direct-merge-action@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
