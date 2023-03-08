@@ -29,7 +29,7 @@ jobs:
       if: ${{ success() }}
       env:
         MENSAJE_EXITO: True
-        run: echo "::set-output name=respuesta::${MENSAJE_EXITO}"
+      run: echo "::set-output name=respuesta::${MENSAJE_EXITO}"
 
   job-ejecutar-pruebas:
     name: ejecutar-pruebas
@@ -49,5 +49,5 @@ jobs:
       id: ejecutar-pruebas
       run: python -m unittest discover -s tests
 
-  job-push:
-    name: hacer-merge
+#  job-push:
+#    name: hacer-merge
