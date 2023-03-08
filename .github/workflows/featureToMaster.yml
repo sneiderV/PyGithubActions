@@ -10,6 +10,9 @@ jobs:
     name: Merge master -> feature
     runs-on: ubuntu-latest
     steps:
+      - name: actual branch
+        run: echo ${{ github.ref }}
+
       - name: Merge master -> feature
         uses: tukasz/direct-merge-action@master
         with:
