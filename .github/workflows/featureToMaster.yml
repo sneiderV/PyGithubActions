@@ -12,7 +12,7 @@ jobs:
       mergeToDevelop: ${{ contains(github.event.head_commit.message, 'merge-to-dev') }}
 
   job-merge-feature-dev:
-    - name: Merge-feature-develop
+    - name: Merge feature develop
       if: ${{need.job-verificar-commit.outputs.mergeToDevelop}}
       outputs:
         respuesta: ${{ steps.git-resultado.outputs.respuesta }}
