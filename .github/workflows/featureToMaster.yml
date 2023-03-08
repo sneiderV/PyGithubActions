@@ -8,6 +8,7 @@ on:
 jobs:
   job-verificar-commit:
     name: verificar commit
+    runs-on: ubuntu-latest
     outputs:
       mergeToDevelop: ${{ contains(github.event.head_commit.message, 'merge-to-dev') }}
     steps:
