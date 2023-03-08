@@ -3,7 +3,7 @@ name: CI Feature to Develop
 on:
    push:
        branches:
-           - 'feature/**'
+           - 'feature/*'
 
 jobs:
   job-merge-feature-to-develop:
@@ -17,8 +17,12 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.7'
+
+      - name: Actual branch
+        run: echo ${{ github.ref }}
+
       - name: Merge main -> feature
-#        if: ${{ contains(github.event.head_commit.message, 'merge-to-dev') }}
+        if: ${{ contains(github.event.head_commit.message, 'merge-to-dev') }}
         uses: tukasz/direct-merge-action@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -41,57 +45,3 @@ jobs:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #          source-branch: ${{ github.ref }}
 #          target-branch: develop
-
-
-
-#jobs:
-#  job-verificar-commit:
-#    name: verificar commit
-#    runs-on: ubuntu-latest
-#    outputs:
-#      mergeToDevelop: ${{ contains(github.event.head_commit.message, 'merge-to-dev') }}
-#    steps:
-#      - name: check if do merge
-#        id: check
-#        run: echo ${{ contains(github.event.head_commit.message, 'merge-to-dev') }}
-#
-#  job-merge-feature-dev:
-#    name: merge-dev-feature
-#    runs-on: ubuntu-latest
-#    steps:
-#    - name: Merge feature develop
-#      if: ${{need.job-verificar-commit.outputs.mergeToDevelop}}
-#      outputs:
-#        respuesta: ${{ steps.git-resultado.outputs.respuesta }}
-#      uses: tukasz/direct-merge-action@master
-#      with:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        source-branch: develop
-#        target-branch: ${{ github.ref }}
-#    - name: git resultado
-#      id: git-resultado
-#      if: ${{ success() }}
-#      env:
-#        MENSAJE_EXITO: True
-#      run: echo "::set-output name=respuesta::${MENSAJE_EXITO}"
-#
-#  job-ejecutar-pruebas:
-#    name: ejecutar-pruebas
-#    runs-on: ubuntu-latest
-#    steps:
-#    - name: Checkout de repositorio
-#      uses: actions/checkout@v2
-#    - name: Configuración de entorno de python
-#      uses: actions/setup-python@v2
-#      with:
-#          python-version: '3.7'
-#    - name: Instalación de librerías y dependencias
-#      run: |
-#        python -m pip install --upgrade pip
-#        pip install -r requirements.txt
-#    - name: ejecutar pruebas
-#      id: ejecutar-pruebas
-#      run: python -m unittest discover -s tests
-
-#  job-push:
-#    name: hacer-merge
