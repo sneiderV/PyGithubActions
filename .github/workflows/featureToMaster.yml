@@ -16,25 +16,25 @@ jobs:
         id: check
         run: echo ${{ contains(github.event.head_commit.message, 'merge-to-dev') }}
 
-#  job-merge-feature-dev:
-#    name: merge-feature-dev
-#    runs-on: ubuntu-latest
-#    steps:
-#    - name: Merge feature develop
-#      if: ${{need.job-verificar-commit.outputs.mergeToDevelop}}
-#      outputs:
-#        respuesta: ${{ steps.git-resultado.outputs.respuesta }}
-#      uses: tukasz/direct-merge-action@master
-#      with:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        source-branch: ${{ github.ref }}
-#        target-branch: develop
-#    - name: git resultado
-#      id: git-resultado
-#      if: ${{ success() }}
-#      env:
-#        MENSAJE_EXITO: True
-#      run: echo "::set-output name=respuesta::${MENSAJE_EXITO}"
+  job-merge-feature-dev:
+    name: merge-dev-feature
+    runs-on: ubuntu-latest
+    steps:
+    - name: Merge feature develop
+      if: ${{need.job-verificar-commit.outputs.mergeToDevelop}}
+      outputs:
+        respuesta: ${{ steps.git-resultado.outputs.respuesta }}
+      uses: tukasz/direct-merge-action@master
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        source-branch: develop
+        target-branch: ${{ github.ref }}
+    - name: git resultado
+      id: git-resultado
+      if: ${{ success() }}
+      env:
+        MENSAJE_EXITO: True
+      run: echo "::set-output name=respuesta::${MENSAJE_EXITO}"
 #
 #  job-ejecutar-pruebas:
 #    name: ejecutar-pruebas
